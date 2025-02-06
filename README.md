@@ -34,7 +34,12 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-7. Jalankan Laravel
+7. Install Package FPDF
+```bash
+composer require codedge/laravel-fpdf
+```
+
+8. Jalankan Laravel
 
 ```bash
 php artisan serve
