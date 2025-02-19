@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\SparepartController;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -15,4 +16,5 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::resource('admin', AdminController::class);
 Route::resource('penjualan', PenjualanController::class);
+Route::resource('sparepart', SparepartController::class);
 Route::get('/penjualan/{id}/download-pdf', [PenjualanController::class, 'downloadPDF'])->name('penjualan.downloadPDF');

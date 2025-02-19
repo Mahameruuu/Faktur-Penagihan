@@ -28,6 +28,16 @@
             <span class="hide-menu">Penjualan</span>
           </a>
         </li>
+
+        <!-- Sparepart -->
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="{{ route('sparepart.index') }}" aria-expanded="false">
+            <span>
+              <i class="ti ti-shopping-cart"></i>
+            </span>
+            <span class="hide-menu">Sparepart</span>
+          </a>
+        </li>
     </nav>
   </div>
 </aside>

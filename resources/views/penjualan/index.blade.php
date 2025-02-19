@@ -65,6 +65,7 @@
                   <td>{{ $penjualan->due_date }}</td> 
                   <td>
                     <a href="{{ route('penjualan.edit', $penjualan->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                    <!-- Form Hapus Langsung -->
                     <form action="{{ route('penjualan.destroy', $penjualan->id) }}" method="POST" style="display:inline;">
                       @csrf
                       @method('DELETE')
@@ -78,30 +79,6 @@
           </table>
         </div>
       </div>
-      
-      <!-- Modal Konfirmasi Hapus -->
-      <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              Apakah Anda yakin ingin menghapus data penjualan ini?
-            </div>
-            <div class="modal-footer">
-              <form id="deleteForm" action="" method="POST" style="display:inline;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger btn-sm btn-delete">Hapus</button>
-              </form>
-              <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
 
       <!-- Footer -->
       <div class="py-6 px-6 text-center">
@@ -111,27 +88,4 @@
     </div>
   </div>
 </div>
-
-<script>
-  // Tangani klik tombol hapus
-  const deleteButtons = document.querySelectorAll('.btn-danger');
-  
-  deleteButtons.forEach(button => {
-    button.addEventListener('click', function(event) {
-      event.preventDefault(); // Menghindari pengiriman form langsung
-
-      // Ambil form yang terkait dengan tombol ini
-      const form = this.closest('form');
-
-      // Atur action URL form menjadi URL form hapus yang sesuai
-      const deleteForm = document.getElementById('deleteForm');
-      deleteForm.action = form.action;
-
-      // Tampilkan modal
-      $('#deleteModal').modal('show');
-    });
-  });
-</script>
-
-
 @endsection
