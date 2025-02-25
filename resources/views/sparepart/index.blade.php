@@ -14,10 +14,16 @@
         </nav>
       </div>
 
-      <div class="mt-5">
+      <div class="mt-5 d-flex justify-content-between">
         <a href="{{ route('sparepart.create') }}" class="btn btn-success mb-3">
           Tambah Sparepart
         </a>
+
+        <!-- Form Pilih Bulan -->
+        <form action="{{ route('sparepart.rekap-kuitansi') }}" method="GET" class="d-flex">
+          <input type="month" class="form-control me-2" id="bulan" name="bulan" required>
+          <button type="submit" class="btn btn-info">Download Rekap Kuitansi</button>
+        </form>
       </div>
 
       <!-- Tabel Sparepart -->
@@ -36,6 +42,7 @@
                 <th>Sparepart Masuk</th>
                 <th>Sisa Stok</th>
                 <th>Harga per Pcs</th>
+                <th>Bulan</th>
                 <th>Aksi</th>
               </tr>
             </thead>
@@ -51,6 +58,7 @@
                   <td>{{ $sparepart->sparepart_masuk }}</td>
                   <td>{{ $sparepart->sisa_stok }}</td>
                   <td>Rp {{ number_format($sparepart->harga_per_pcs, 0, ',', '.') }}</td>
+                  <td>{{ $sparepart->bulan_transaksi }}</td>
                   <td>
                     <a href="{{ route('sparepart.edit', $sparepart->id) }}" class="btn btn-warning btn-sm">Edit</a>
                     <!-- Form Hapus Langsung -->

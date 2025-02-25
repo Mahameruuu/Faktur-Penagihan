@@ -55,6 +55,12 @@
                     <label for="hargaPerPcs" class="form-label">Harga per PCS</label>
                     <input type="text" class="form-control" id="hargaPerPcs" name="harga_per_pcs" placeholder="Masukkan Harga per PCS">
                 </div>
+                
+                <!-- Bulan Transaksi -->
+                <div class="mb-3">
+                    <label for="bulanTransaksi" class="form-label">Bulan Transaksi</label>
+                    <input type="month" class="form-control" id="bulanTransaksi" name="bulan_transaksi">
+                </div>
 
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

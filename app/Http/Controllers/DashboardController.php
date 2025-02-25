@@ -14,7 +14,7 @@ class DashboardController extends Controller
     {
         $jumlahTransaksi = Penjualan::count();
         $penjualans = Penjualan::orderBy('transaction_date', 'desc')->limit(10)->get();
-        return view('dashboard', compact('penjualans', 'jumlahTransaksi'));
+        return view('admin.index', compact('penjualans', 'jumlahTransaksi'));
     }
 
 

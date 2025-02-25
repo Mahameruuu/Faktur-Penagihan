@@ -17,6 +17,7 @@ class Sparepart extends Model
         'sparepart_keluar',
         'sparepart_masuk',
         'sisa_stok',
-        'harga_per_pcs'
+        'harga_per_pcs',
+        'bulan_transaksi'
     ];
 }

@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->integer('sparepart_masuk');
             $table->integer('sisa_stok');
             $table->decimal('harga_per_pcs', 10, 2);
+            $table->string('bulan_transaksi');
             $table->timestamps();
         });
     }
