@@ -22,19 +22,33 @@ class SparepartController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'no_partlist' => 'required|unique:spareparts',
             'jenis_mesin' => 'required',
             'tipe_mesin' => 'required',
             'nama_sparepart' => 'required',
             'jumlah_stok' => 'required|integer',
             'sparepart_keluar' => 'required|integer',
             'sparepart_masuk' => 'required|integer',
-            'sisa_stok' => 'required|integer',
             'harga_per_pcs' => 'required|numeric',
             'bulan_transaksi' => 'required|date_format:Y-m'
         ]);
 
-        Sparepart::create($request->all());
+        // Hitung sisa stok otomatis
+        $sisa_stok = $request->jumlah_stok + $request->sparepart_masuk - $request->sparepart_keluar;
 
+        Sparepart::create([
+            'no_partlist' => $request->no_partlist,
+            'jenis_mesin' => $request->jenis_mesin,
+            'tipe_mesin' => $request->tipe_mesin,
+            'nama_sparepart' => $request->nama_sparepart,
+            'jumlah_stok' => $request->jumlah_stok,
+            'sparepart_keluar' => $request->sparepart_keluar,
+            'sparepart_masuk' => $request->sparepart_masuk,
+            'sisa_stok' => $sisa_stok, 
+            'harga_per_pcs' => $request->harga_per_pcs,
+            'bulan_transaksi' => $request->bulan_transaksi,
+        ]);
+    
         return redirect()->route('sparepart.index')->with('success', 'Sparepart berhasil ditambahkan.');
     }
 
@@ -51,18 +65,32 @@ class SparepartController extends Controller
     public function update(Request $request, Sparepart $sparepart)
     {
         $request->validate([
+            'no_partlist' => 'required|unique:spareparts,no_partlist,' . $sparepart->id,
             'jenis_mesin' => 'required',
             'tipe_mesin' => 'required',
             'nama_sparepart' => 'required',
             'jumlah_stok' => 'required|integer',
             'sparepart_keluar' => 'required|integer',
             'sparepart_masuk' => 'required|integer',
-            'sisa_stok' => 'required|integer',
             'harga_per_pcs' => 'required|numeric',
             'bulan_transaksi' => 'required|date_format:Y-m'
         ]);
 
-        $sparepart->update($request->all());
+        // Hitung ulang sisa stok saat update
+        $sisa_stok = $request->jumlah_stok + $request->sparepart_masuk - $request->sparepart_keluar;
+
+        $sparepart->update([
+            'no_partlist' => $request->no_partlist,
+            'jenis_mesin' => $request->jenis_mesin,
+            'tipe_mesin' => $request->tipe_mesin,
+            'nama_sparepart' => $request->nama_sparepart,
+            'jumlah_stok' => $request->jumlah_stok,
+            'sparepart_keluar' => $request->sparepart_keluar,
+            'sparepart_masuk' => $request->sparepart_masuk,
+            'sisa_stok' => $sisa_stok, 
+            'harga_per_pcs' => $request->harga_per_pcs,
+            'bulan_transaksi' => $request->bulan_transaksi,
+        ]);
 
         return redirect()->route('sparepart.index')->with('success', 'Sparepart berhasil diperbarui.');
     }
@@ -77,14 +105,12 @@ class SparepartController extends Controller
     {
         $bulan = $request->input('bulan', date('Y-m'));
         $spareparts = Sparepart::where('bulan_transaksi', $bulan)->get();
+        
         if ($spareparts->isEmpty()) {
             return dd("Data kosong untuk bulan " . $bulan);
         }
 
         $pdf = Pdf::loadView('sparepart.rekap-kuitansi', compact('spareparts', 'bulan'));
-
         return $pdf->download('rekap-kuitansi_' . $bulan . '.pdf');
     }
-
 }
-

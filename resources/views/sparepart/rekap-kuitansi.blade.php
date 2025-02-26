@@ -14,6 +14,7 @@
     <table>
         <thead>
             <tr>
+                <th>Nomor Partlist</th>
                 <th>Jenis Mesin</th>
                 <th>Tipe Mesin</th>
                 <th>Nama Sparepart</th>
@@ -27,6 +28,7 @@
         <tbody>
             @foreach ($spareparts as $sparepart)
             <tr>
+                <td>{{ $sparepart->no_partlist }}</td>
                 <td>{{ $sparepart->jenis_mesin }}</td>
                 <td>{{ $sparepart->tipe_mesin }}</td>
                 <td>{{ $sparepart->nama_sparepart }}</td>

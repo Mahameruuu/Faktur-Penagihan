@@ -34,6 +34,7 @@
             <thead>
               <tr>
                 <th>No</th>
+                <th>Nomor Partlist</th>
                 <th>Jenis Mesin</th>
                 <th>Tipe Mesin</th>
                 <th>Nama Sparepart</th>
@@ -50,6 +51,7 @@
               @foreach($spareparts as $sparepart)
                 <tr>
                   <td>{{ $loop->iteration }}</td>
+                  <td>{{ $sparepart->no_partlist }}</td>
                   <td>{{ $sparepart->jenis_mesin }}</td>
                   <td>{{ $sparepart->tipe_mesin }}</td>
                   <td>{{ $sparepart->nama_sparepart }}</td>

@@ -10,6 +10,7 @@ class Sparepart extends Model
     use HasFactory;
 
     protected $fillable = [
+        'no_partlist',
         'jenis_mesin',
         'tipe_mesin',
         'nama_sparepart',

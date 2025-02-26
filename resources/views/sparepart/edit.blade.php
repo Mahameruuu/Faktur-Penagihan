@@ -19,6 +19,12 @@
         @csrf
         @method('PUT')
 
+        <!-- Nomor Partlist -->
+        <div class="mb-3">
+            <label for="nomorPartlist" class="form-label">Nomor Partlist</label>
+            <input type="text" class="form-control" id="nomorPartlist" name="nomor_partlist" value="{{ old('nomor_parlist', $sparepart->nomor_parlist) }}">
+        </div>
+
         <!-- Jenis Mesin -->
         <div class="mb-3">
             <label for="jenisMesin" class="form-label">Jenis Mesin</label>
