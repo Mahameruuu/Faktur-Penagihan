@@ -20,23 +20,37 @@
         </a>
       </div>
 
-      <!-- Filter berdasarkan tanggal -->
+      <!-- Form Filter -->
       <form action="{{ route('penjualan.index') }}" method="GET" class="mb-4">
-        <div class="row">
-          <div class="col-md-3">
-            <label for="start_date" class="form-label">Tanggal Mulai</label>
-            <input type="date" class="form-control" name="start_date" id="start_date" value="{{ request('start_date') }}">
-          </div>
-          <div class="col-md-3">
-            <label for="end_date" class="form-label">Tanggal Akhir</label>
-            <input type="date" class="form-control" name="end_date" id="end_date" value="{{ request('end_date') }}">
-          </div>
-          <div class="col-md-2">
-            <label>&nbsp;</label><br>
-            <button type="submit" class="btn btn-primary mt-2">Filter</button>
-          </div>
+        <div class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <label for="start_date" class="form-label">Tanggal Mulai</label>
+                <input type="date" class="form-control" name="start_date" id="start_date" value="{{ request('start_date') }}">
+            </div>
+
+            <div class="col-md-3">
+                <label for="end_date" class="form-label">Tanggal Akhir</label>
+                <input type="date" class="form-control" name="end_date" id="end_date" value="{{ request('end_date') }}">
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Filter</button>
+            </div>
         </div>
       </form>
+
+      <form action="{{ route('penjualan.rekap') }}" method="GET">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label for="bulan" class="form-label">Pilih Bulan</label>
+                <div class="d-flex">
+                    <input type="month" class="form-control me-2" id="bulan" name="bulan" required>
+                    <button type="submit" class="btn btn-info">Download Rekap Penjualan</button>
+                </div>
+            </div>
+        </div>
+      </form>
+
 
       <!-- Tabel Penjualan -->
       <div class="card">

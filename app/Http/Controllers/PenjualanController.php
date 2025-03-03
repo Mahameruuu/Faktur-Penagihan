@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Penjualan;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use setasign\Fpdi\Fpdi; 
 use Storage;
-
+use Carbon\Carbon;
 
 class PenjualanController extends Controller
 {
@@ -53,6 +54,7 @@ class PenjualanController extends Controller
             'customer_reference_number' => 'nullable|string|max:255',
             'tag' => 'nullable|string|max:255',
             'payment_terms' => 'nullable|string|max:255',
+            'bank_name' => 'nullable|string|max:255',
             'warehouse' => 'nullable|string|max:255',
             'product' => 'nullable|string|max:255',
             'message' => 'nullable|string',
@@ -99,6 +101,7 @@ class PenjualanController extends Controller
             'due_date' => 'nullable|date',
             'transaction_number' => 'required|unique:penjualans,transaction_number,' . $id,
             'product' => 'nullable|string|max:255',
+            'bank_name' => 'nullable|string|max:255',
             'sub_total' => 'required|numeric',
             'remaining_balance' => 'nullable|numeric',
             'attachment' => 'nullable|file|max:2048',
@@ -268,5 +271,28 @@ class PenjualanController extends Controller
         $pdf->Output('D', 'penjualan_' . $penjualan->transaction_number . '.pdf');
     }
 
+    public function rekapPenjualan(Request $request)
+    {
+        $request->validate([
+            'bulan' => 'required|date_format:Y-m',
+        ]);
+
+        $bulan = $request->bulan;
+        $tahun = substr($bulan, 0, 4);
+        $bulanAngka = substr($bulan, 5, 2);
+
+        $penjualans = Penjualan::whereYear('transaction_date', $tahun)
+                            ->whereMonth('transaction_date', $bulanAngka)
+                            ->get();
+
+        if ($penjualans->isEmpty()) {
+            return back()->with('error', 'Tidak ada data penjualan untuk bulan ' . Carbon::createFromFormat('Y-m', $bulan)->translatedFormat('F Y'));
+        }
+
+        // Generate PDF
+        $pdf = Pdf::loadView('penjualan.rekap-penjualan', compact('penjualans', 'bulan'))
+                ->setPaper('a4', 'landscape');
+        return $pdf->download('rekap-penjualan_' . $bulan . '.pdf');
+    }
         
 }

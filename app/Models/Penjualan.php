@@ -12,7 +12,7 @@ class Penjualan extends Model
     protected $fillable = [
         'customer_name', 'email', 'billing_address', 'transaction_date',
         'due_date', 'transaction_number', 'customer_reference_number',
-        'tag', 'payment_terms', 'warehouse', 'product', 'message',
+        'tag', 'payment_terms', 'bank_name', 'warehouse', 'product', 'message',
         'memo', 'attachment', 'sub_total', 'deductions', 'down_payment',
         'remaining_balance',
     ];

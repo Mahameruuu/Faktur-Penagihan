@@ -5,7 +5,6 @@ use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\SparepartController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use Barryvdh\DomPDF\Facade\Pdf; 
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -16,6 +15,7 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+Route::get('/penjualan/rekap', [PenjualanController::class, 'rekapPenjualan'])->name('penjualan.rekap');
 Route::get('/sparepart/rekap-kuitansi', [SparepartController::class, 'rekapKuitansi'])->name('sparepart.rekap-kuitansi');
 
 Route::resource('penjualan', PenjualanController::class);

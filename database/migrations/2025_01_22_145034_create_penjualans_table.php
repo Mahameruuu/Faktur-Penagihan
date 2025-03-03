@@ -19,6 +19,7 @@ class CreatePenjualansTable extends Migration
             $table->string('customer_reference_number')->nullable();
             $table->string('tag')->nullable();
             $table->string('payment_terms')->nullable();
+            $table->string('bank_name')->nullable();
             $table->string('warehouse')->nullable();
             $table->string('product')->nullable();
             $table->text('message')->nullable();
