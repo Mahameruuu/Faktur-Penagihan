@@ -30,8 +30,15 @@ class AuthController extends Controller
 
         // Coba login user
         if (Auth::attempt($request->only('email', 'password'), $request->filled('remember'))) {
-            // Redirect ke dashboard atau halaman yang diinginkan
-            return redirect()->route('admin.index')->with('success', 'Login berhasil!');
+            $user = Auth::user();
+
+            // Redirect berdasarkan role
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.index')->with('success', 'Login berhasil sebagai Admin!');
+            } elseif ($user->role === 'supervisor') {
+                return redirect()->route('supervisor.index')->with('success', 'Login berhasil sebagai Supervisor!');
+            }
+            
         }
 
         // Jika gagal login
@@ -43,11 +50,15 @@ class AuthController extends Controller
     /**
      * Menangani logout user.
      */
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
+        $request->session()->invalidate(); // Hapus sesi
+        $request->session()->regenerateToken(); // Regenerasi token untuk keamanan
+
         return redirect()->route('login')->with('success', 'Logout berhasil.');
     }
+
 
     /**
      * Menampilkan halaman register.
@@ -67,6 +78,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|in:admin,supervisor', // Validasi role
         ]);
 
         // Buat user baru
@@ -74,12 +86,14 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
         ]);
 
         // Login user secara otomatis
         Auth::login($user);
 
-        // Redirect ke dashboard atau halaman lain
-        return redirect()->route('login')->with('success', 'Registrasi berhasil!');
+        // Redirect berdasarkan role
+        return redirect()->route('admin.index')->with('success', 'Registrasi berhasil!');
     }
 }
+

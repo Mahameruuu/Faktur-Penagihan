@@ -9,35 +9,57 @@
 
     <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
       <ul id="sidebarnav">
-        <!-- Dashboard -->
-        <li class="sidebar-item">
-          <a class="sidebar-link" href="{{ route('admin.index') }}" aria-expanded="false">
-            <span>
-              <i class="ti ti-layout-dashboard"></i>
-            </span>
-            <span class="hide-menu">Dashboard</span>
-          </a>
-        </li>
         
-        <!-- Penjualan -->
-        <li class="sidebar-item">
-          <a class="sidebar-link" href="{{ route('penjualan.index') }}" aria-expanded="false">
-            <span>
-              <i class="ti ti-shopping-cart"></i>
-            </span>
-            <span class="hide-menu">Penjualan</span>
-          </a>
-        </li>
+        <!-- Dashboard (Semua Role Bisa Akses) -->
+        @if (auth()->user()->role === 'admin')
+          <li class="sidebar-item">
+            <a class="sidebar-link" href="{{ route('admin.index') }}" aria-expanded="false">
+              <span><i class="ti ti-layout-dashboard"></i></span>
+              <span class="hide-menu">Dashboard</span>
+            </a>
+          </li>
+        @endif
 
-        <!-- Sparepart -->
-        <li class="sidebar-item">
-          <a class="sidebar-link" href="{{ route('sparepart.index') }}" aria-expanded="false">
-            <span>
-              <i class="ti ti-shopping-cart"></i>
-            </span>
-            <span class="hide-menu">Sparepart</span>
-          </a>
-        </li>
+        @if (auth()->user()->role === 'supervisor')
+          <li class="sidebar-item">
+            <a class="sidebar-link" href="{{ route('supervisor.index') }}" aria-expanded="false">
+              <span><i class="ti ti-layout-dashboard"></i></span>
+              <span class="hide-menu">Dashboard</span>
+            </a>
+          </li>
+        @endif
+
+        <!-- Menu Untuk Admin -->
+        @if (auth()->user()->role === 'admin')
+          <li class="sidebar-item">
+            <a class="sidebar-link" href="{{ route('penjualan.index') }}" aria-expanded="false">
+              <span><i class="ti ti-shopping-cart"></i></span>
+              <span class="hide-menu">Penjualan</span>
+            </a>
+          </li>
+        @endif
+
+        <!-- Menu Untuk Supervisor -->
+        @if (auth()->user()->role === 'supervisor')
+          <li class="sidebar-item">
+            <a class="sidebar-link" href="{{ route('sparepart.index') }}" aria-expanded="false">
+              <span><i class="ti ti-check"></i></span>
+              <span class="hide-menu">Verifikasi Sparepart</span>
+            </a>
+          </li>
+        @endif
+
+        <!-- Menu Untuk Operator -->
+        @if (auth()->user()->role === 'admin')
+          <li class="sidebar-item">
+            <a class="sidebar-link" href="{{ route('sparepart.index') }}" aria-expanded="false">
+              <span><i class="ti ti-tool"></i></span>
+              <span class="hide-menu">Sparepart</span>
+            </a>
+          </li>
+        @endif
+
+      </ul>
     </nav>
   </div>
 </aside>
