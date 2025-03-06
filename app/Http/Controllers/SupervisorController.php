@@ -19,7 +19,13 @@ class SupervisorController extends Controller
     public function verify($id)
     {
         $sparepart = Sparepart::findOrFail($id);
-        $sparepart->update(['status_verifikasi' => 'verified']);
+
+        $sisa_stok = $sparepart->jumlah_stok + $sparepart->sparepart_masuk - $sparepart->sparepart_keluar;
+
+        $sparepart->update([
+            'status_verifikasi' => 'verified',
+            'sisa_stok' => $sisa_stok
+        ]);
 
         return redirect()->route('supervisor.index')->with('success', 'Sparepart telah diverifikasi.');
     }

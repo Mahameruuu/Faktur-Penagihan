@@ -47,6 +47,7 @@ class SparepartController extends Controller
             'sisa_stok' => $sisa_stok, 
             'harga_per_pcs' => $request->harga_per_pcs,
             'bulan_transaksi' => $request->bulan_transaksi,
+            'status_verifikasi' => 'pending',
         ]);
     
         return redirect()->route('sparepart.index')->with('success', 'Sparepart berhasil ditambahkan.');
@@ -62,38 +63,35 @@ class SparepartController extends Controller
         return view('sparepart.edit', compact('sparepart'));
     }
 
-    public function update(Request $request, Sparepart $sparepart)
-    {
-        $request->validate([
-            'no_partlist' => 'required|unique:spareparts,no_partlist,' . $sparepart->id,
-            'jenis_mesin' => 'required',
-            'tipe_mesin' => 'required',
-            'nama_sparepart' => 'required',
-            'jumlah_stok' => 'required|integer',
-            'sparepart_keluar' => 'required|integer',
-            'sparepart_masuk' => 'required|integer',
-            'harga_per_pcs' => 'required|numeric',
-            'bulan_transaksi' => 'required|date_format:Y-m'
-        ]);
+    public function update(Request $request, $id)
+{
+    $sparepart = Sparepart::findOrFail($id);
 
-        // Hitung ulang sisa stok saat update
-        $sisa_stok = $request->jumlah_stok + $request->sparepart_masuk - $request->sparepart_keluar;
-
-        $sparepart->update([
-            'no_partlist' => $request->no_partlist,
-            'jenis_mesin' => $request->jenis_mesin,
-            'tipe_mesin' => $request->tipe_mesin,
-            'nama_sparepart' => $request->nama_sparepart,
-            'jumlah_stok' => $request->jumlah_stok,
-            'sparepart_keluar' => $request->sparepart_keluar,
-            'sparepart_masuk' => $request->sparepart_masuk,
-            'sisa_stok' => $sisa_stok, 
-            'harga_per_pcs' => $request->harga_per_pcs,
-            'bulan_transaksi' => $request->bulan_transaksi,
-        ]);
-
-        return redirect()->route('sparepart.index')->with('success', 'Sparepart berhasil diperbarui.');
+    // Cek jika status sudah "approved" atau "rejected", maka tidak bisa diupdate
+    if (in_array($sparepart->status_verifikasi, ['approved', 'rejected'])) {
+        return redirect()->route('sparepart.index')->with('error', 'Data tidak dapat diperbarui karena sudah diverifikasi.');
     }
+
+    // Validasi data yang diperbolehkan untuk diupdate
+    $request->validate([
+        'no_partlist' => 'required|string',
+        'jenis_mesin' => 'required|string',
+        'tipe_mesin' => 'required|string',
+        'nama_sparepart' => 'required|string',
+        'jumlah_stok' => 'required|integer',
+        'sparepart_keluar' => 'required|integer',
+        'sparepart_masuk' => 'required|integer',
+        'harga_per_pcs' => 'required|numeric',
+        'bulan_transaksi' => 'required|date_format:Y-m',
+    ]);
+
+    // Update data sparepart
+    $sparepart->update($request->except('status_verifikasi')); // Status tidak boleh diubah
+
+    return redirect()->route('sparepart.index')->with('success', 'Sparepart berhasil diperbarui.');
+}
+
+
 
     public function destroy(Sparepart $sparepart)
     {

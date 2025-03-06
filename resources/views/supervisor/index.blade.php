@@ -41,28 +41,29 @@
               </tr>
             </thead>
             <tbody>
-              @foreach($spareparts as $index => $sparepart)
-                <tr>
-                  <td>{{ $index + 1 }}</td>
-                  <td>{{ $sparepart->no_partlist }}</td>
+            @foreach ($spareparts as $sparepart)
+              <tr>
                   <td>{{ $sparepart->nama_sparepart }}</td>
-                  <td>{{ $sparepart->sparepart_masuk }}</td>
-                  <td>{{ $sparepart->sparepart_keluar }}</td>
+                  <td>{{ $sparepart->jumlah_stok }}</td>
+                  <td>{{ $sparepart->status_verifikasi }}</td>
                   <td>
-                    <form action="{{ route('supervisor.verify', $sparepart->id) }}" method="POST" style="display:inline;">
-                      @csrf
-                      <button type="submit" class="btn btn-success btn-sm">Verifikasi</button>
-                    </form>
-                    <form action="{{ route('supervisor.reject', $sparepart->id) }}" method="POST" style="display:inline;">
-                      @csrf
-                      <button type="submit" class="btn btn-danger btn-sm">Tolak</button>
-                    </form>
+                      @if ($sparepart->status_verifikasi == 'pending')
+                          <form action="{{ route('supervisor.verify', $sparepart->id) }}" method="POST">
+                              @csrf
+                              <button type="submit" class="btn btn-success">Verifikasi</button>
+                          </form>
+                          <form action="{{ route('supervisor.reject', $sparepart->id) }}" method="POST">
+                              @csrf
+                              <button type="submit" class="btn btn-danger">Tolak</button>
+                          </form>
+                      @else
+                          <span class="badge bg-{{ $sparepart->status_verifikasi == 'verified' ? 'success' : 'danger' }}">
+                              {{ ucfirst($sparepart->status_verifikasi) }}
+                          </span>
+                      @endif
                   </td>
-                  <td>
-                    <span class="badge bg-info">{{ ucfirst($sparepart->status_verifikasi) }}</span>
-                  </td>
-                </tr>
-              @endforeach
+              </tr>
+            @endforeach
             </tbody>
           </table>
         </div>

@@ -44,6 +44,7 @@
                 <th>Sisa Stok</th>
                 <th>Harga per Pcs</th>
                 <th>Bulan</th>
+                <th>Status</th> <!-- Kolom Status -->
                 <th>Aksi</th>
               </tr>
             </thead>
@@ -61,6 +62,15 @@
                   <td>{{ $sparepart->sisa_stok }}</td>
                   <td>Rp {{ number_format($sparepart->harga_per_pcs, 0, ',', '.') }}</td>
                   <td>{{ $sparepart->bulan_transaksi }}</td>
+                  <td>
+                    @if ($sparepart->status_verifikasi == 'pending')
+                      <span class="badge bg-warning">Menunggu Verifikasi</span>
+                    @elseif ($sparepart->status_verifikasi == 'verified')
+                      <span class="badge bg-success">Terverifikasi</span>
+                    @else
+                      <span class="badge bg-danger">Ditolak</span>
+                    @endif
+                  </td>
                   <td>
                     <a href="{{ route('sparepart.edit', $sparepart->id) }}" class="btn btn-warning btn-sm">Edit</a>
                     <!-- Form Hapus Langsung -->
